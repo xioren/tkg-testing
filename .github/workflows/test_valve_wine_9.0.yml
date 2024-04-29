@@ -1,4 +1,4 @@
-name: test_01
+name: test_valve_wine
 on:
   workflow_dispatch:
 env:
@@ -35,9 +35,9 @@ jobs:
       - name: package
         working-directory: /home/runner/work/wine-tkg-git/wine-tkg-git/non-makepkg-builds/
         run: |
-          mv wine-tkg-staging-* caffe-$WINE_VERSION-x86_64
-          tar cJvf caffe-$WINE_VERSION-x86_64.tar.xz caffe-$WINE_VERSION-x86_64
-          mv caffe-$WINE_VERSION-x86_64.tar.xz /tmp/caffe-$WINE_VERSION-x86_64.tar.xz
+          mv wine-tkg-staging-* $name-$WINE_VERSION-x86_64
+          tar cJvf $name-$WINE_VERSION-x86_64.tar.xz $name-$WINE_VERSION-x86_64
+          mv $name-$WINE_VERSION-x86_64.tar.xz /tmp/$name-$WINE_VERSION-x86_64.tar.xz
 
       - name: release
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -45,6 +45,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           draft: false
           prerelease: false
-          automatic_release_tag: "caffe-${{ env.WINE_VERSION }}"
-          title: "Caffe ${{ env.WINE_VERSION }}"
-          files: "/tmp/caffe-${{ env.WINE_VERSION }}-x86_64.tar.xz"
+          automatic_release_tag: "$name-${{ env.WINE_VERSION }}"
+          title: "$name ${{ env.WINE_VERSION }}"
+          files: "/tmp/$name-${{ env.WINE_VERSION }}-x86_64.tar.xz"
