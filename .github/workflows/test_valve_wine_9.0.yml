@@ -21,6 +21,7 @@ jobs:
         working-directory: /home/runner/work/
         run: |
           git clone https://github.com/Frogging-Family/wine-tkg-git.git
+          cd wine-tkg-git/wine-tkg-git
           sed -i 's/distro=""/distro="debuntu"/' customization.cfg
           sed -i 's/LOCAL_PRESET=""/LOCAL_PRESET="valve-exp-bleeding"/' customization.cfg
           sed -i 's/_wayland_driver="false"/_wayland_driver="true"/' customization.cfg
