@@ -1,8 +1,8 @@
-name: valve_wine
+name: wine-staging
 on:
   workflow_dispatch:
 env:
-  NAME: 'wine'
+  NAME: 'wine-staging'
   WINE_VERSION: '9.7'
 jobs:
   build:
