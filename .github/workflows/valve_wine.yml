@@ -27,7 +27,6 @@ jobs:
         run: |
           sed -i 's/distro=""/distro="debuntu"/' customization.cfg
           sed -i 's/LOCAL_PRESET=""/LOCAL_PRESET="valve-exp-bleeding"/' customization.cfg
-          sed -i 's/_wayland_driver="false"/_wayland_driver="true"/' customization.cfg
           echo '_ci_build="true"' >> customization.cfg
 
       - name: start build
