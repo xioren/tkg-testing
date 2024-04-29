@@ -36,8 +36,8 @@ jobs:
         working-directory: /home/runner/work/wine-tkg-git/wine-tkg-git/non-makepkg-builds/
         run: |
           mv wine-tkg-staging-* $name-$WINE_VERSION-x86_64
-          tar cJvf $name-$WINE_VERSION-x86_64.tar.xz $name-$WINE_VERSION-x86_64
-          mv $name-$WINE_VERSION-x86_64.tar.xz /tmp/$name-$WINE_VERSION-x86_64.tar.xz
+          tar -czvf $name-$WINE_VERSION-x86_64.tar.gz $name-$WINE_VERSION-x86_64
+          mv $name-$WINE_VERSION-x86_64.tar.gz /tmp/$name-$WINE_VERSION-x86_64.tar.gz
 
       - name: release
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -47,4 +47,4 @@ jobs:
           prerelease: false
           automatic_release_tag: "$name-${{ env.WINE_VERSION }}"
           title: "$name ${{ env.WINE_VERSION }}"
-          files: "/tmp/$name-${{ env.WINE_VERSION }}-x86_64.tar.xz"
+          files: "/tmp/$name-${{ env.WINE_VERSION }}-x86_64.tar.gz"
