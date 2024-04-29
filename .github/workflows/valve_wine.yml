@@ -35,7 +35,7 @@ jobs:
       - name: package
         working-directory: /home/runner/work/wine-tkg-git/wine-tkg-git/non-makepkg-builds/
         run: |
-          mv wine-tkg-staging-* $name-$WINE_VERSION-x86_64
+          mv wine-tkg-* $name-$WINE_VERSION-x86_64
           tar -czvf $name-$WINE_VERSION-x86_64.tar.gz $name-$WINE_VERSION-x86_64
           mv $name-$WINE_VERSION-x86_64.tar.gz /tmp/$name-$WINE_VERSION-x86_64.tar.gz
 
