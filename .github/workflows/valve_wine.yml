@@ -1,8 +1,8 @@
-name: test_valve_wine
+name: valve_wine
 on:
   workflow_dispatch:
 env:
-  WINE_VERSION: 9.0
+  WINE_VERSION: '9.0'
 jobs:
   build:
     runs-on: ubuntu-latest
