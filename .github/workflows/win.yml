@@ -1,0 +1,54 @@
+name: valve_wine
+on:
+  workflow_dispatch:
+env:
+  NAME: 'wine'
+  WINE_VERSION: '9.7'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup
+        working-directory: /home/runner/work/
+        run: |
+          sudo apt purge -y ubuntu-advantage-tools python3-update-manager
+          sudo dpkg --add-architecture i386 && sudo apt update
+          sudo apt install aptitude
+          sudo aptitude remove -y '?narrow(?installed,?version(deb.sury.org))'
+
+      - name: clone wine-tkg-git repo
+        working-directory: /home/runner/work/
+        run: git clone https://github.com/Frogging-Family/wine-tkg-git.git
+
+      - name: customize
+        working-directory: /home/runner/work/wine-tkg-git/wine-tkg-git
+        run: |
+          sed -i 's/distro=""/distro="debuntu"/' customization.cfg
+          sed -i 's/LOCAL_PRESET=""/LOCAL_PRESET="staging"/' customization.cfg
+          echo '_ci_build="true"' >> customization.cfg
+          sed -i 's/_NOLIB32="false"/_NOLIB32="wow64"/' wine-tkg-profiles/advanced-customization.cfg
+          sed -i 's/_NOINITIALPROMPT="false"/_NOINITIALPROMPT="true"/' wine-tkg-profiles/wine-tkg-staging.cfg
+          sed -i 's/_use_fsync="false"/_use_fsync="true"/' wine-tkg-profiles/wine-tkg-staging.cfg
+
+      - name: start build
+        working-directory: /home/runner/work/wine-tkg-git/wine-tkg-git/
+        run: yes|./non-makepkg-build.sh
+
+      - name: package
+        working-directory: /home/runner/work/wine-tkg-git/wine-tkg-git/non-makepkg-builds/
+        run: |
+          mv wine-tkg-* $NAME-$WINE_VERSION-x86_64
+          tar -czvf $NAME-$WINE_VERSION-x86_64.tar.gz $NAME-$WINE_VERSION-x86_64
+          mv $NAME-$WINE_VERSION-x86_64.tar.gz /tmp/$NAME-$WINE_VERSION-x86_64.tar.gz
+
+      - name: release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: false
+          prerelease: false
+          automatic_release_tag: "${{ env.NAME }}-${{ env.WINE_VERSION }}"
+          title: "${{ env.NAME }} ${{ env.WINE_VERSION }}"
+          files: "/tmp/${{ env.NAME }}-${{ env.WINE_VERSION }}-x86_64.tar.gz"
