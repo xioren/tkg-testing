@@ -13,7 +13,7 @@ jobs:
       - name: setup
         working-directory: /home/runner/work/
         run: |
-          sudo apt purge -y ubuntu-advantage-tools
+          sudo apt purge -y ubuntu-advantage-tools python3-update-manager
           sudo dpkg --add-architecture i386 && sudo apt update
           sudo apt install aptitude
           sudo aptitude remove -y '?narrow(?installed,?version(deb.sury.org))'
