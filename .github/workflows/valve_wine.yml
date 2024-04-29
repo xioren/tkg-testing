@@ -2,6 +2,7 @@ name: valve_wine
 on:
   workflow_dispatch:
 env:
+  NAME: 'valve_wine'
   WINE_VERSION: '9.0'
 jobs:
   build:
@@ -34,9 +35,9 @@ jobs:
       - name: package
         working-directory: /home/runner/work/wine-tkg-git/wine-tkg-git/non-makepkg-builds/
         run: |
-          mv wine-tkg-* $name-$WINE_VERSION-x86_64
-          tar -czvf $name-$WINE_VERSION-x86_64.tar.gz $name-$WINE_VERSION-x86_64
-          mv $name-$WINE_VERSION-x86_64.tar.gz /tmp/$name-$WINE_VERSION-x86_64.tar.gz
+          mv wine-tkg-* $NAME-$WINE_VERSION-x86_64
+          tar -czvf $NAME-$WINE_VERSION-x86_64.tar.gz $NAME-$WINE_VERSION-x86_64
+          mv $NAME-$WINE_VERSION-x86_64.tar.gz /tmp/$NAME-$WINE_VERSION-x86_64.tar.gz
 
       - name: release
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -44,6 +45,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           draft: false
           prerelease: false
-          automatic_release_tag: "$name-${{ env.WINE_VERSION }}"
-          title: "$name ${{ env.WINE_VERSION }}"
-          files: "/tmp/$name-${{ env.WINE_VERSION }}-x86_64.tar.gz"
+          automatic_release_tag: "${{ env.NAME }}-${{ env.WINE_VERSION }}"
+          title: "${{ env.NAME }} ${{ env.WINE_VERSION }}"
+          files: "/tmp/${{ env.NAME }}-${{ env.WINE_VERSION }}-x86_64.tar.gz"
